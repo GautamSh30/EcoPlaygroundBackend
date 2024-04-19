@@ -23,9 +23,9 @@ const generateAccessAndRefereshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, username, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if ([email, username, password].some((field) => field?.trim() === "")) {
+  if ([username, email, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -38,9 +38,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
+    username,
     email,
     password,
-    username: username.toLowerCase(),
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -57,15 +57,13 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, username, password } = req.body;
+  const { username, password } = req.body;
 
-  if (!username && !email) {
-    throw new ApiError(400, "username or email is required");
+  if (!username) {
+    throw new ApiError(400, "username is required");
   }
 
-  const user = await User.findOne({
-    $or: [{ username }, { email }],
-  });
+  const user = await User.findOne({ username });
 
   if (!user) {
     throw new ApiError(404, "User does not exist");
@@ -124,6 +122,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
+
+  console.log("User logged out");
 
   return res
     .status(200)
