@@ -1,6 +1,6 @@
 import  Question from  '../models/questionSchema.js';
 import Result from '../models/resultSchema.js';
-import {questions } from '../database/data.js';
+import {questions } from '../db/data.js';
 export async function getQuestions(req,res){
    try{
     const q= await Question.find();

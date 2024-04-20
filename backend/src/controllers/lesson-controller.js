@@ -1,5 +1,5 @@
 import Lesson from '../models/lessonSchema.js';
-import lessons from '../database/lesson-data.js';
+import lessons from '../db/lesson-data.js';
 
 export async function getLessons(req,res){
    try{
