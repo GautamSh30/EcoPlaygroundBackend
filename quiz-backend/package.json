@@ -2,8 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-modules src/index.js",
     "start": "npx nodemon src/index.js"
   },
   "author": "",

@@ -1,6 +1,7 @@
-const  Question  = require('../models/questionSchema');
-const {questions,answers}= require('../database/data');
-const getQuestions = async (req,res)=>{
+import  Question from  '../models/questionSchema.js';
+import Result from '../models/resultSchema.js';
+import {questions } from '../database/data.js';
+export async function getQuestions(req,res){
    try{
     const q= await Question.find();
     res.json(q);
@@ -9,9 +10,9 @@ const getQuestions = async (req,res)=>{
    }
 }
 
-const insertQuestions = async (req,res)=>{
+export async function insertQuestions(req,res){
    try{
-    Question.insertMany({questions:questions,answers:answers},
+    Question.insertMany({questions:questions},
         res.json({msg:"Data Saved Successfully!"})
     );
    }catch(error){
@@ -19,7 +20,7 @@ const insertQuestions = async (req,res)=>{
    }
 }
 
-const dropQuestions = async (req,res)=>{
+export async function dropQuestions(req,res){
    try{
     await Question.deleteMany();
     res.json({msg:"Data Deleted Successfully!"});
@@ -28,16 +29,16 @@ const dropQuestions = async (req,res)=>{
    }
 }
 
-const getResult = async (req,res)=>{
+export async function getResult(req,res){
    try{
-    const result = await Results.find();    
+    const result = await Result.find();    
     res.json(result);
    }catch(error){
         res.json({error});
    }
 }
 
-const storeResult = async (req,res)=>{
+export async function storeResult (req,res){
    try{
    const {username,result,attempts,points,acheived} = req.body;
    if(!username && !result) throw new Error("Data not provided");
@@ -46,7 +47,7 @@ const storeResult = async (req,res)=>{
    }
 }
 
-const dropResult = async (req,res)=>{
+export async function dropResult (req,res){
     try{
         await Result.deleteMany();
         res.json({msg:"Result deleted Successfully"});
@@ -56,11 +57,3 @@ const dropResult = async (req,res)=>{
 }
     
 
-module.exports = {
-    getQuestions,
-    insertQuestions,
-    dropQuestions,
-    getResult,
-    storeResult,
-    dropResult,
-}
